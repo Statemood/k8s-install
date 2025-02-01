@@ -152,7 +152,7 @@
     src: "{{ item.src }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
     dest: "{{ item.dest }}"
   with_items:
     - {src: "bootstrap.kubeconfig.j2",dest: "/etc/kubernetes/bootstrap.kubeconfig" }
@@ -164,7 +164,7 @@
     src: "{{ item.src }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
     dest: "{{ item.dest }}"
   with_items:
     - {src: "kubelet.conf.j2",dest: "/etc/kubernetes/kubelet.conf" }

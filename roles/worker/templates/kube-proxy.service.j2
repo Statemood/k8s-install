@@ -21,7 +21,7 @@ ExecStartPre=-/usr/sbin/modprobe nf_conntrack
 {% else %}
 ExecStartPre=-/usr/sbin/modprobe nf_conntrack_ipv4
 {% endif %}
-User=root
+User=kube
 ExecStart=/usr/bin/kube-proxy --config=/etc/kubernetes/kube-proxy.conf
 Restart=on-failure
 LimitNOFILE=65536

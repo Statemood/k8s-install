@@ -9,6 +9,8 @@
   template:
     src: "keepalived.conf.j2"
     dest: "/etc/keepalived/keepalived.conf"
+    seuser: system_u
+    setype: etc_t
   tags: generate_keepalived_conf
   notify:
     - restart keepalived
@@ -16,8 +18,10 @@
 - name: "Generate check_haproxy.sh"
   template:
     src: "check_haproxy.sh.j2"
-    dest: "/etc/keepalived/check_haproxy.sh"
-    mode: 0777
+    dest: "/usr/libexec/keepalived/check_haproxy.sh"
+    mode: 0755
+    seuser: system_u
+    setype: keepalived_unconfined_script_exec_t
   tags: generate_check_haproxy_sh
   notify:
     - restart keepalived
