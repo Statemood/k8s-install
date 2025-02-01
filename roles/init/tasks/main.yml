@@ -9,6 +9,8 @@
   copy:
     src: "ipenv.sh"
     dest: "/etc/profile.d/"
+    seuser: system_u
+    setype: bin_t
   tags: os_env
 
 - name: "Set timezone"
@@ -165,12 +167,10 @@
       - mtr
       - tar
       - curl
-      - wget
       - lsof
       - unzip
       - lrzsz
       - rsync
-      - telnet
       - bash-completion
     state: present
   tags: install_app
