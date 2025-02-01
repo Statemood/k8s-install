@@ -52,9 +52,10 @@
     - none
   tags: swap
 
-- name: "Disable selinux"
+- name: "Enable SELinux"
   selinux:
-    state: disabled
+    policy: targeted
+    state: enforcing
   when:
     - ansible_os_family in ['RedHat', 'AlmaLinux', 'Rocky', 'TencentOS']
   tags: selinux

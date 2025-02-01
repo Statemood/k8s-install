@@ -64,6 +64,8 @@
     owner: root
     group: root
     mode: 0755
+    seuser: system_u
+    setype: bin_t
   tags: install_runc
 
 - name: Create cni directory
@@ -72,6 +74,8 @@
     owner: root
     group: root
     mode: 0755
+    seuser: system_u
+    setype: bin_t
     state: directory
   tags: cni_config
 
@@ -100,6 +104,8 @@
     owner: root
     group: root
     mode: 0644
+    seuser: system_u
+    setype: systemd_unit_file_t
   tags: containerd_config
 
 - name: "Create containerd data directory"

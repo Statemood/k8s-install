@@ -2,7 +2,7 @@
 - name: "Create etcd user group"
   group:
     name: etcd
-    gid: 201
+    gid: 2379
     system: yes
   tags:
     - create_etcd_group
@@ -11,7 +11,7 @@
 - name: Create etcd user
   user:
     name: etcd
-    uid: 201
+    uid: 2379
     group: etcd
     comment: "Etcd User"
     createhome: no
@@ -35,9 +35,11 @@
   copy:
     src: "{{ item.src }}"
     dest: "/usr/bin/"
-    owner: etcd
-    group: etcd
+    owner: root
+    group: root
     mode: 0750
+    seuser: system_u
+    setype: bin_t
     remote_src: yes
   with_items:
     - {src: "/tmp/etcd-{{ etcd.version }}-linux-amd64/etcd"}
@@ -51,9 +53,11 @@
   copy:
     src: "{{ item.line }}"
     dest: "/etc/etcd/pki/"
-    owner: etcd
-    group: etcd
+    owner: root
+    group: root
     mode: 0640
+    seuser: system_u
+    setype: cert_t
   with_items:
     - {line: '{{ cert.dir }}/etcd-ca.pem'}
     - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/etcd-server.pem'}
@@ -72,6 +76,8 @@
     owner: etcd
     group: etcd
     mode: 0700
+    seuser: system_u
+    setype: v_lib_t
     state: directory
   tags:
     - create_etcd_data_dir
@@ -82,6 +88,8 @@
   template:
     src: "etcd.service.j2"
     dest: "/usr/lib/systemd/system/etcd.service"
+    seuser: system_u
+    setype: systemd_unit_file_t
   tags: dis_etcd_config
   notify:
     - restart etcd

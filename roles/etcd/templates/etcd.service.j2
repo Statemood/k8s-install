@@ -30,7 +30,7 @@ ExecStart=/usr/bin/etcd \
          --election-timeout=3000 \
          --heartbeat-interval=500 \
          --snapshot-count=50000 \
-         --log-level=info
+         --log-level=warn
 
 NotifyAccess=all
 Restart=always

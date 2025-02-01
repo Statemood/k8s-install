@@ -12,7 +12,7 @@ download:
 # NTP Settings
 ntp:
   # 需要自定义NTP服务器时需设置为true
-  manage_config: false
+  manage_config: true
   servers:
     - "ntp1.aliyun.com iburst"
     - "ntp2.aliyun.com iburst"
@@ -30,7 +30,7 @@ cert:
   # 签发集群整数保存目录，默认签发10年有限期证书
   dir: /opt/certs
   # 签发证书大小
-  size: 2048
+  size: 3072
   # 签发证书的时间
   day: 3650d
 
@@ -38,9 +38,9 @@ cert:
 etcd:
   # etcd 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{etcd.download_url}}/{{etcd.version}}/etcd-{{etcd.version}}-linux-amd64.tar.gz
-  download_url: https://mirrors.chenby.cn/https://github.com/etcd-io/etcd/releases/download
+  download_url: https://files.rulin.io/k8s-install/etcd/v3.5.18/etcd-v3.5.18-linux-amd64.tar.gz
   # etcd 版本
-  version: v3.5.16
+  version: v3.5.18
   # etcd 数据目录，如使用多个目录映射同一块数据盘的方式，请勿修改默认目录
   data_dir: "/var/lib/etcd"
 
@@ -51,7 +51,7 @@ etcd:
 # 如使用域名，需提前配置解析。不使用域名时，请注释掉
 # 如使用haproxy + keepalived ，并且跟master节点部署在一起时，请修改port以避免端口冲突
 loadbalance:
-  ip: 10.43.75.200
+  ip: 192.168.5.30
   port: 6443
   # domain_name: apiserver.kubeop.com
   # access_ip:
@@ -60,16 +60,16 @@ loadbalance:
 # https://github.com/kubernetes/kubernetes
 kubernetes:
   # kubernetes 二进制安装包下载地址
-  # 因官方下载源调整，调整后下载较慢，故改为个人仓库加速下载：https://github.com/kubeop/k8s/releases
+  # 因官方下载源调整，且调整后下载较慢，故调整为个人仓库加速下载：https://github.com/kubeop/sync_images
   # 使用Github Action同步二进制文件到Github Release, 并使用代理加速下载。该仓库也会同步相关容器镜像到阿里云镜像仓库
   # 如使用自建文件服务器，请保证下载路径为:{{kubernetes.download_url}}/{{kubernetes.version}}/kube-apiserver
-  download_url: https://mirrors.chenby.cn/https://github.com/kubeop/k8s/releases/download
+  download_url: https://files.rulin.io/k8s-install/k8s
   # kubernetes 版本
-  version: v1.32.1
+  version: v1.31.5
   # 集群Pod网段
-  pods_subnet: 172.16.0.0/12
+  pods_subnet: 10.64.0.0/16
   # 集群Service网段
-  service_addresses: 192.168.0.0/16
+  service_addresses: 10.0.0.0/16
   # 节点Pod网段掩码大小
   node_prefix: 25
   # 节点最大Pod数量
@@ -83,13 +83,21 @@ kubernetes:
   # 使用 MetalLB、kube-vip 必须设置为 true 才能正常工作
   strict_arp: false
 
+# https://github.com/opencontainers/runc
+runc:
+  # runc 安装包下载地址
+  # 如使用自建文件服务器，请保证下载路径为:{{runc.download_url}}/{{runc.version}}/runc.amd64
+  download_url: https://mirrors.chenby.cn/https://github.com/opencontainers/runc/releases/download
+  # runc 版本
+  version: v1.1.15
+
 # https://github.com/containernetworking/plugins
 cniplugins:
   # cni-plugins 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{cniplugins.download_url}}/{{cniplugins.version}}/cni-plugins-linux-amd64-{{cniplugins.version}}.tgz
   download_url: https://mirrors.chenby.cn/https://github.com/containernetworking/plugins/releases/download
   # cni-plugins 版本
-  version: v1.6.0
+  version: v1.5.1
 
 # https://github.com/kubernetes-sigs/cri-tools
 critools:
@@ -97,27 +105,16 @@ critools:
   # 如使用自建文件服务器，请保证下载路径为:{{critools.download_url}}/{{critools.version}}/crictl-{{critools.version}}-linux-amd64.tar.gz
   download_url: https://mirrors.chenby.cn/https://github.com/kubernetes-sigs/cri-tools/releases/download
   # cri-tools 版本
-  version: v1.32.0
-
-# https://github.com/opencontainers/runc
-runc:
-  # runc 安装包下载地址
-  # 如使用自建文件服务器，请保证下载路径为:{{runc.download_url}}/{{runc.version}}/runc.amd64
-  download_url: https://mirrors.chenby.cn/https://github.com/opencontainers/runc/releases/download
-  # runc 版本，建议根据containerd版本对应
-  # https://github.com/containerd/containerd/blob/v1.7.24/script/setup/runc-version
-  version: v1.2.2
+  version: v1.31.1
 
 # https://github.com/containerd/containerd
 containerd:
   # containerd 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{containerd.download_url}}/v{{containerd.version}}/containerd-{{containerd.version}}-linux-amd64.tar.gz
   download_url: https://mirrors.chenby.cn/https://github.com/containerd/containerd/releases/download
-  # containerd 版本
-  version: 1.7.24
-  # containerd 配置文件目录
-  cfg_dir: /etc/containerd
-  # containerd 持久化数据目录，如使用多个目录映射同一块数据盘的方式，请保持默认目录
+  # containerd 版本,建议使用1.6.x版本(1.6.x当前为长期稳定版本)
+  version: 1.6.36
+  # containerd 持久化数据目录，如使用多个目录映射同一块数据盘的方式，请勿修改默认目录
   root: "/var/lib/containerd"
   # containerd 临时数据目录
   state: "/run/containerd"
@@ -127,51 +124,28 @@ containerd:
     max_recv_message_size: 16777216
     max_send_message_size: 16777216
   debug:
-    address: ""
-    level: "info"
-    format: ""
-    uid: 0
-    gid: 0
+    level: ""
   metrics:
     address: ""
     grpc_histogram: false
   cri:
-    sandbox_image: 
-      repo: "registry.aliyuncs.com/google_containers/pause"
-      tag: "3.10"
-    max_container_log_line_size: 16384
-    enable_unprivileged_ports: false
-    enable_unprivileged_icmp: false
-    enable_selinux: false
-    disable_apparmor: false
-    tolerate_missing_hugetlb_controller: true
-    disable_hugetlb_controller: true
-    image_pull_progress_timeout: 5m
-    enable_cdi: false
+    sandbox_image: "registry.aliyuncs.com/google_containers/pause:3.9"
+    max_concurrent_downloads: 3
+    max_container_log_line_size: -1
   containerd:
     snapshotter: overlayfs
-    discard_unpacked_layers: true
   options:
     SystemdCgroup: true
-  nri:
-    enabled: false
-  registry_mirrors:
-    - prefix: docker.io
-      mirrors:
-        - host: https://registry-1.docker.io
-          capabilities: ["pull", "resolve"]
-          skip_verify: false
-  registry_auth: []
-    #- registry: 10.0.0.2:5000
-    #  username: user
-    #  password: pass
+  registries:
+    "docker.io": "https://registry-1.docker.io"
+    "registry.k8s.io": "https://registry.k8s.io"
 
 # Network Plugin
 network_plugin: calico
 # cilium need linux kernel >= 4.9.17
 cilium:
   # https://github.com/cilium/cilium
-  version: v1.16.5
+  version: v1.16.2
   # {{cilium.registry}}/operator-generic:{{cilium.version}}
   # {{cilium.registry}}/cilium:{{cilium.version}}
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
@@ -180,8 +154,8 @@ cilium:
 
 flannel:
   # https://github.com/flannel-io/flannel
-  version: v0.26.3
-  plugin_version: v1.6.0-flannel1
+  version: v0.25.7
+  plugin_version: v1.5.1-flannel2
   # {{flannel.registry}}/flannel-cni-plugin:{{flannel.plugin_version}}
   # {{flannel.registry}}/flannel:{{flannel.version}}
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
@@ -215,7 +189,7 @@ calico:
 
 kuberouter:
   # https://github.com/cloudnativelabs/kube-router
-  version: v2.4.1
+  version: v2.2.1
   # {{kube-router.registry}}/kube-router
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
   # Setups node CNI to allow hairpin mode, requires node reboots, see
@@ -247,11 +221,11 @@ metrics_server:
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
 npd:
   enabled: false
-  version: v0.8.20
+  version: v0.8.19
   # {{npd.registry}}/node-problem-detector:{{npd.version}}
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
 nvidia_device_plugin:
   enabled: false
-  version: v0.17.0
+  version: v0.16.2
   # {{nvidia_device_plugin.registry}}/k8s-device-plugin:{{nvidia_device_plugin.version}}
   registry: registry.cn-hangzhou.aliyuncs.com/kubeop
