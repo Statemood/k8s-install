@@ -116,7 +116,7 @@
     mode: 0755
     state: directory
     seuser: system_u
-    setype: var_lib_t
+    setype: container_var_lib_t
   tags: containerd_config
 
 - name: "Create containerd config directory"
@@ -126,6 +126,8 @@
     group: root
     mode: 0755
     state: directory
+    seuser: system_u
+    setype: container_config_t
   tags: containerd_config
 
 - name: "Set containerd config"
@@ -136,7 +138,7 @@
     group: root
     mode: 0640
     seuser: system_u
-    setype: etc_t
+    setype: container_config_t
   tags: containerd_config
   notify:
     - restart containerd
