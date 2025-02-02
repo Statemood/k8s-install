@@ -37,7 +37,7 @@
     dest: "/usr/bin/"
     owner: root
     group: root
-    mode: 0750
+    mode: 0755
     seuser: system_u
     setype: bin_t
     remote_src: yes
@@ -55,7 +55,7 @@
     dest: "/etc/etcd/pki/"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
     seuser: system_u
     setype: cert_t
   with_items:

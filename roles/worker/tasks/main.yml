@@ -153,6 +153,8 @@
     owner: root
     group: root
     mode: 0644
+    seuser: system_u
+    setype: etc_t
     dest: "{{ item.dest }}"
   with_items:
     - {src: "bootstrap.kubeconfig.j2",dest: "/etc/kubernetes/bootstrap.kubeconfig" }
@@ -165,6 +167,8 @@
     owner: root
     group: root
     mode: 0644
+    seuser: system_u
+    setype: etc_t
     dest: "{{ item.dest }}"
   with_items:
     - {src: "kubelet.conf.j2",dest: "/etc/kubernetes/kubelet.conf" }
@@ -178,6 +182,8 @@
     owner: root
     group: root
     mode: 0644
+    seuser: system_u
+    setype: systemd_unit_file_t
     dest: "{{ item.dest }}"
   with_items:
     - {src: "kubelet.service.j2",dest: "/usr/lib/systemd/system/kubelet.service" }

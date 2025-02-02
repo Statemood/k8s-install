@@ -38,7 +38,7 @@ cert:
 etcd:
   # etcd 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{etcd.download_url}}/{{etcd.version}}/etcd-{{etcd.version}}-linux-amd64.tar.gz
-  download_url: https://files.rulin.io/k8s-install/etcd/v3.5.18/etcd-v3.5.18-linux-amd64.tar.gz
+  download_url: https://files.rulin.io/k8s-install/etcd
   # etcd 版本
   version: v3.5.18
   # etcd 数据目录，如使用多个目录映射同一块数据盘的方式，请勿修改默认目录
@@ -111,9 +111,9 @@ critools:
 containerd:
   # containerd 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{containerd.download_url}}/v{{containerd.version}}/containerd-{{containerd.version}}-linux-amd64.tar.gz
-  download_url: https://mirrors.chenby.cn/https://github.com/containerd/containerd/releases/download
+  download_url: https://files.rulin.io/k8s-install/containerd
   # containerd 版本,建议使用1.6.x版本(1.6.x当前为长期稳定版本)
-  version: 1.6.36
+  version: 2.0.2
   # containerd 持久化数据目录，如使用多个目录映射同一块数据盘的方式，请勿修改默认目录
   root: "/var/lib/containerd"
   # containerd 临时数据目录
