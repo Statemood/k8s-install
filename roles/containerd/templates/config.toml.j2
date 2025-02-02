@@ -31,13 +31,8 @@ oom_score = {{ containerd.oom_score | default(0) }}
   [plugins."io.containerd.grpc.v1.cri"]
     sandbox_image = "{{ containerd.cri.sandbox_image.repo }}:{{ containerd.cri.sandbox_image.tag }}"
     max_container_log_line_size = {{ containerd.cri.max_container_log_line_size }}
-    enable_unprivileged_ports = {{ containerd.cri.enable_unprivileged_ports | lower }}
-    enable_unprivileged_icmp = {{ containerd.cri.enable_unprivileged_icmp | lower }}
     enable_selinux = {{ containerd.cri.enable_selinux | lower }}
     disable_apparmor = {{ containerd.cri.disable_apparmor | lower }}
-    tolerate_missing_hugetlb_controller = {{ containerd.cri.tolerate_missing_hugetlb_controller | lower }}
-    disable_hugetlb_controller = {{ containerd.cri.disable_hugetlb_controller | lower }}
-    image_pull_progress_timeout = "{{ containerd.cri.image_pull_progress_timeout }}"
 {% if containerd.cri.enable_cdi %}
     enable_cdi = true
     cdi_spec_dirs = ["/etc/cdi", "/var/run/cdi"]

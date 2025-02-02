@@ -139,10 +139,18 @@ containerd:
       tag: 3.9
     max_concurrent_downloads: 3
     max_container_log_line_size: -1
+    disable_apparmor: false
+    enable_selinux: false
+    enable_cdi: false
+  nri:
+    enabled: false
   containerd:
     snapshotter: overlayfs
+    discard_unpacked_layers: false
   options:
     SystemdCgroup: true
+  registry_auth: ""
+  registry_mirrors: ""
   registries:
     "docker.io": "https://registry-1.docker.io"
     "registry.k8s.io": "https://registry.k8s.io"

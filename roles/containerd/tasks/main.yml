@@ -115,8 +115,6 @@
     group: root
     mode: 0755
     state: directory
-    seuser: system_u
-    setype: container_var_lib_t
   tags: containerd_config
 
 - name: "Create containerd config directory"
@@ -126,8 +124,6 @@
     group: root
     mode: 0755
     state: directory
-    seuser: system_u
-    setype: container_config_t
   tags: containerd_config
 
 - name: "Set containerd config"
@@ -138,29 +134,11 @@
     group: root
     mode: 0640
     seuser: system_u
-    setype: container_config_t
+    setype: etc_t
   tags: containerd_config
   notify:
     - restart containerd
-
-- name: Configure containerd registries
-  block:
-    - name: Create registry directories
-      file:
-        path: "{{ containerd.cfg_dir }}/certs.d/{{ item.prefix }}"
-        state: directory
-        mode: "0755"
-      loop: "{{ containerd.registry_mirrors }}"
-    - name: Write hosts.toml file
-      template:
-        src: hosts.toml.j2
-        dest: "{{ containerd.cfg_dir }}/certs.d/{{ item.prefix }}/hosts.toml"
-        mode: "0640"
-      loop: "{{ containerd.registry_mirrors }}"
-  tags: containerd_config
-  notify:
-    - restart containerd
-
+    
 - name: Install cri-tools
   unarchive:
     src: "{{ download.dest }}/critools/{{ critools.version }}/crictl-{{ critools.version }}-linux-amd64.tar.gz"
