@@ -86,10 +86,22 @@
     group: root
     mode: 0755
     state: directory
+    seuser: system_u
+    setype: etc_t
   with_items:
-    - {line: '/etc/kubernetes/pki'}
     - {line: '/etc/kubernetes/manifests'}
     - {line: "{{ kubernetes.kubelet_dir }}"}
+  tags: dir
+
+- name: "Create kubernetes directory: pki"
+  file:
+    path: "/etc/kubernetes/pki"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    setype: cert_t
+    state: directory
   tags: dir
 
 - name: "Create kubelet directory"
@@ -109,7 +121,9 @@
     dest: "/usr/bin/"
     owner: root
     group: root
-    mode: 0750
+    mode: 0755
+    seuser: system_u
+    setype: bin_t
   with_items:
     - kubelet
     - kube-proxy
@@ -124,7 +138,6 @@
     mode: 0644
   with_items:
     - {line: "{{ cert.dir }}/ca.pem"}
-    - {line: "{{ cert.dir }}/ca.key"}
     - {line: "{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-proxy.pem"}
     - {line: "{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-proxy.key"}
   tags:
