@@ -127,6 +127,9 @@ containerd:
   debug:
     level: ""
     address: ""
+    format: ""
+    uid: 0
+    gid: 0
   metrics:
     address: ""
     grpc_histogram: false
