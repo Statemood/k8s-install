@@ -77,7 +77,7 @@
     group: etcd
     mode: 0700
     seuser: system_u
-    setype: v_lib_t
+    setype: var_lib_t
     state: directory
   tags:
     - create_etcd_data_dir
