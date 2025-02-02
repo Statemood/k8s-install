@@ -120,11 +120,13 @@ containerd:
   state: "/run/containerd"
   # containerd oom_score
   oom_score: -999
+  cfg_dir: "/etc/containerd"
   grpc:
     max_recv_message_size: 16777216
     max_send_message_size: 16777216
   debug:
     level: ""
+    address: ""
   metrics:
     address: ""
     grpc_histogram: false

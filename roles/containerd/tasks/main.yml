@@ -115,6 +115,8 @@
     group: root
     mode: 0755
     state: directory
+    seuser: system_u
+    setype: var_lib_t
   tags: containerd_config
 
 - name: "Create containerd config directory"
@@ -132,7 +134,9 @@
     dest: "{{ containerd.cfg_dir }}/config.toml"
     owner: root
     group: root
-    mode: "0640"
+    mode: 0640
+    seuser: system_u
+    setype: etc_t
   tags: containerd_config
   notify:
     - restart containerd
