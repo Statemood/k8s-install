@@ -16,7 +16,7 @@ ExecStart=/usr/bin/etcd \
          --listen-peer-urls=https://{{ ansible_default_ipv4.address }}:2380 \
          --listen-client-urls=https://{{ ansible_default_ipv4.address }}:2379 \
          --listen-metrics-urls=http://{{ ansible_default_ipv4.address }}:2381 \
-         --initial-cluster={% set pk = groups['etcd'] %}{% for host in pk %}{{ hostvars[host].hostname.split('-')[-2:] | join('-') | lower }}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %} \
+         --initial-cluster={% set pk = groups['etcd'] %}{% for host in pk %}{{ hostvars[host].hostname }}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %} \
          --client-cert-auth=true \
          --peer-client-cert-auth=true \
          --cert-file=/etc/etcd/pki/etcd-server.pem \

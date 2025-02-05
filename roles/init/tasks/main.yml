@@ -76,20 +76,20 @@
     state: stopped
   tags: firewalld
 
-- name: "Set ssh"
+- name: "Set SSH"
   lineinfile:
     dest: "/etc/ssh/sshd_config"
     regexp: "^{{ item.regexp }}"
     line: "{{ item.line }}"
     state: present
   with_items:
-    - { regexp: "UseDNS", line: "UseDNS no" }
-    - { regexp: "ClientAliveInterval", line: "ClientAliveInterval 600" }
-    - { regexp: "ClientAliveCountMax", line: "ClientAliveCountMax 2" }
     - { regexp: "AddressFamily", line: "AddressFamily inet" }
-    - { regexp: "PermitRootLogin", line: "PermitRootLogin yes" }
-    - { regexp: "PermitEmptyPasswords", line: "PermitEmptyPasswords no" }
+    - { regexp: "ClientAliveCountMax", line: "ClientAliveCountMax 2" }
+    - { regexp: "ClientAliveInterval", line: "ClientAliveInterval 600" }
     - { regexp: "PasswordAuthentication", line: "PasswordAuthentication no" }
+    - { regexp: "PermitEmptyPasswords", line: "PermitEmptyPasswords no" }
+    - { regexp: "PermitRootLogin", line: "PermitRootLogin prohibit-password" }
+    - { regexp: "UseDNS", line: "UseDNS no" }
   notify:
     - restart sshd
   tags: sshd
@@ -169,6 +169,7 @@
       - curl
       - lsof
       - unzip
+      - iftop
       - lrzsz
       - rsync
       - bash-completion

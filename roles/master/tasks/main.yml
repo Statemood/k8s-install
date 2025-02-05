@@ -89,27 +89,27 @@
     group: root
     mode: 0644
     seuser: system_u
-    setype: cert_t   
+    setype: cert_t
   with_items:
     - {line: '{{ cert.dir }}/ca.key'}
     - {line: '{{ cert.dir }}/ca.pem'}
     - {line: '{{ cert.dir }}/sa.key'}
     - {line: '{{ cert.dir }}/sa.pub'}
     - {line: '{{ cert.dir }}/etcd-ca.pem'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver.key'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver.pem'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver-etcd-client.key'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver-etcd-client.pem'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver-kubelet-client.key'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/apiserver-kubelet-client.pem'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver.key'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver.pem'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver-etcd-client.key'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver-etcd-client.pem'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver-kubelet-client.key'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-apiserver-kubelet-client.pem'}
     - {line: '{{ cert.dir }}/front-proxy-ca.key'}
     - {line: '{{ cert.dir }}/front-proxy-ca.pem'}
     - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/front-proxy-client.key'}
     - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/front-proxy-client.pem'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/controller-manager.key'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/controller-manager.pem'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/scheduler.key'}
-    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/scheduler.pem'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-controller-manager.key'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-controller-manager.pem'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-scheduler.key'}
+    - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/kube-scheduler.pem'}
     - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/admin.key'}
     - {line: '{{ cert.dir }}/{{ ansible_default_ipv4.address }}/admin.pem'}
   tags:
