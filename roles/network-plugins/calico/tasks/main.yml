@@ -11,7 +11,7 @@
 
 - name: "calico | Get etcd-client content"
   slurp:
-    src: "/etc/kubernetes/pki/apiserver-etcd-client.pem"
+    src: "/etc/kubernetes/pki/kube-apiserver-etcd-client.pem"
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
   register: cni_etcd_cert
@@ -21,7 +21,7 @@
 
 - name: "calico | Get etcd-client content"
   slurp:
-    src: "/etc/kubernetes/pki/apiserver-etcd-client.key"
+    src: "/etc/kubernetes/pki/kube-apiserver-etcd-client.key"
   delegate_to: "{{ groups['master'][0] }}"
   run_once: true
   register: cni_etcd_key

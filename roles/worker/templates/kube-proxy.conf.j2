@@ -3,7 +3,7 @@ kind: KubeProxyConfiguration
 bindAddress: 0.0.0.0
 clientConnection:
   contentType: application/vnd.kubernetes.protobuf
-  kubeconfig: /etc/kubernetes/proxy.kubeconfig
+  kubeconfig: /etc/kubernetes/kube-proxy.kubeconfig
 clusterCIDR: {{ kubernetes.pods_subnet }}
 configSyncPeriod: 0s
 conntrack:

@@ -65,7 +65,7 @@ kubernetes:
   # 如使用自建文件服务器，请保证下载路径为:{{kubernetes.download_url}}/{{kubernetes.version}}/kube-apiserver
   download_url: https://files.rulin.io/k8s-install/k8s
   # kubernetes 版本
-  version: v1.31.5
+  version: v1.32.2
   # 集群Pod网段
   pods_subnet: 10.96.0.0/16
   # 集群Service网段
@@ -87,25 +87,25 @@ kubernetes:
 runc:
   # runc 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{runc.download_url}}/{{runc.version}}/runc.amd64
-  download_url: https://mirrors.chenby.cn/https://github.com/opencontainers/runc/releases/download
+  download_url: https://files.rulin.io/k8s-install/runc
   # runc 版本
-  version: v1.1.15
+  version: v1.2.5
 
 # https://github.com/containernetworking/plugins
 cniplugins:
   # cni-plugins 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{cniplugins.download_url}}/{{cniplugins.version}}/cni-plugins-linux-amd64-{{cniplugins.version}}.tgz
-  download_url: https://mirrors.chenby.cn/https://github.com/containernetworking/plugins/releases/download
+  download_url: https://files.rulin.io/k8s-install/cni-plugins
   # cni-plugins 版本
-  version: v1.5.1
+  version: v1.6.2
 
 # https://github.com/kubernetes-sigs/cri-tools
 critools:
   # cri-tools 安装包下载地址
   # 如使用自建文件服务器，请保证下载路径为:{{critools.download_url}}/{{critools.version}}/crictl-{{critools.version}}-linux-amd64.tar.gz
-  download_url: https://mirrors.chenby.cn/https://github.com/kubernetes-sigs/cri-tools/releases/download
+  download_url: https://files.rulin.io/k8s-install/cri-tools
   # cri-tools 版本
-  version: v1.31.1
+  version: v1.32.0
 
 # https://github.com/containerd/containerd
 containerd:
@@ -135,8 +135,8 @@ containerd:
     grpc_histogram: false
   cri:
     sandbox_image: 
-      repo: "registry.aliyuncs.com/google_containers/pause"
-      tag: 3.9
+      repo: "registry.rulin.io/k8s/pause"
+      tag: "3.10"
     max_concurrent_downloads: 3
     max_container_log_line_size: -1
     disable_apparmor: false
@@ -161,10 +161,10 @@ network_plugin: cilium
 # cilium need linux kernel >= 4.9.17
 cilium:
   # https://github.com/cilium/cilium
-  version: v1.16.2
+  version: v1.17.1
   # {{cilium.registry}}/operator-generic:{{cilium.version}}
   # {{cilium.registry}}/cilium:{{cilium.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/cilium
   # "disabled" or "vxlan" or "geneve"
   network_mode: vxlan
 
@@ -191,17 +191,17 @@ calico:
   # 如使用自建文件服务器，请保证下载路径为: {{calico.download_url}}/calico/{{ calico.version }}/calicoctl-linux-amd64
   download_url: https://mirrors.chenby.cn/https://github.com/projectcalico/calico/releases/download
   # https://github.com/projectcalico/calico
-  version: v3.28.2
+  version: v3.29.2
   # {{calico.registry}}/kube-controllers:{{calico.version}}
   # {{calico.registry}}/node:{{calico.version}}
   # {{calico.registry}}/cni:{{calico.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/calico
   # "ipip" or "bgp" or "mix"
-  network_mode: ipip
+  network_mode: bgp
   # mtu 默认为0，表示自动自动检测
   mtu: 0
   # 可指定网卡interface=eth.*或使用can-reach=网关
-  ip_autodetection_method: interface=ens33
+  ip_autodetection_method: interface=ens.*
 
 kuberouter:
   # https://github.com/cloudnativelabs/kube-router
@@ -221,25 +221,25 @@ kuberouter:
 
 # Addons
 coredns:
-  version: 1.11.3
+  version: 1.12.0
   # {{coredns.registry}}/coredns:{{coredns.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/k8s
 nodelocaldns:
   enabled: true
-  version: 1.23.1
+  version: 1.25.0
   # {{nodelocaldns.registry}}/k8s-dns-node-cache:{{nodelocaldns.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/k8s
   ip: 169.254.20.10
 metrics_server:
   enabled: true
   version: v0.7.2
   # {{metrics_server.registry}}/metrics-server:{{metrics_server.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/k8s
 npd:
   enabled: false
-  version: v0.8.19
+  version: v0.8.20
   # {{npd.registry}}/node-problem-detector:{{npd.version}}
-  registry: registry.cn-hangzhou.aliyuncs.com/kubeop
+  registry: registry.rulin.io/k8s
 nvidia_device_plugin:
   enabled: false
   version: v0.16.2

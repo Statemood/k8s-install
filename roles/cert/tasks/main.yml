@@ -5,6 +5,7 @@
     state: directory
   with_items:
     - "{{ groups['etcd'] }}"
+    - "{{ groups['admin'] }}"
     - "{{ groups['master'] }}"
     - "{{ groups['worker'] }}"
 
@@ -220,7 +221,6 @@
       - IP:{{ item }}
   with_items:
     - "{{ groups['etcd'] }}"
-    - "{{ groups['master'] }}"
 
 - name: "Generate etcd-healthcheck-client certificate"
   openssl_certificate:
@@ -405,6 +405,7 @@
     type: RSA
     size: "{{ cert.size }}"
   with_items:
+    - "{{ groups['admin'] }}"
     - "{{ groups['master'] }}"
 
 - name: "Generate admin request"
@@ -442,6 +443,7 @@
     ownca_path: "{{ cert.dir }}/ca.pem"
     ownca_privatekey_path: "{{ cert.dir }}/ca.key"
   with_items:
+    - "{{ groups['admin'] }}"
     - "{{ groups['master'] }}"
 
 # kube-controller-manager
