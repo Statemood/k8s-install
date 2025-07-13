@@ -109,7 +109,7 @@
     group: root
     mode: 0644
     seuser: system_u
-    setype: container_unit_file_t
+    setype: systemd_unit_file_t
   tags: containerd_config
 
 - name: "Create containerd data directory"
