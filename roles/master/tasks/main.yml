@@ -144,7 +144,7 @@
     src: "{{ item.src }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
     dest: "{{ item.dest }}"
     seuser: system_u
     setype: etc_t
@@ -158,7 +158,7 @@
     src: "{{ item.src }}"
     owner: root
     group: root
-    mode: 0640
+    mode: 0644
     dest: "{{ item.dest }}"
     seuser: system_u
     setype: etc_t
