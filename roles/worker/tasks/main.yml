@@ -170,7 +170,7 @@
     dest: "/usr/bin/"
     owner: root
     group: root
-    mode: 0750
+    mode: 0755
     seuser: system_u
     setype: bin_t
   with_items:
