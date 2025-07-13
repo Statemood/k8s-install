@@ -9,6 +9,8 @@
   copy:
     src: "ipenv.sh"
     dest: "/etc/profile.d/"
+    seuser: system_u
+    setype: bin_t
   tags: os_env
 
 - name: "Set timezone"
@@ -26,6 +28,8 @@
   template:
     src: "chrony.conf.j2"
     dest: "/etc/chrony.conf"
+    seuser: system_u
+    setype: etc_t
   when:
     - ntp.manage_config
   tags: ntp
@@ -52,9 +56,10 @@
     - none
   tags: swap
 
-- name: "Disable selinux"
+- name: "Enable SELinux"
   selinux:
-    state: disabled
+    state: enforcing
+    policy: targeted
   when:
     - ansible_os_family in ['RedHat', 'AlmaLinux', 'Rocky', 'TencentOS']
   tags: selinux
@@ -166,6 +171,8 @@
     owner: root
     group: systemd-journal
     mode: 2775
+    seuser: system_u
+    setype: var_log_t
     state: directory
   notify:
     - restart systemd-journald

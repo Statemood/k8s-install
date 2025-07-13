@@ -4,6 +4,8 @@
     src: "{{ download.dest }}/calico/{{ calico.version }}/{%- if ansible_architecture == 'x86_64' -%}amd64{%- else -%}arm64{%- endif -%}/calicoctl-linux-{%- if ansible_architecture == 'x86_64' -%}amd64{%- else -%}arm64{%- endif -%}"
     dest: "/usr/local/bin/calicoctl"
     mode: 0750
+    seuser: system_u
+    setype: bin_t
   delegate_to: "{{ item }}"
   delegate_facts: true
   loop: "{{ groups['master'] }}"
@@ -13,6 +15,8 @@
   file:
     path: "/etc/calico"
     state: directory
+    seuser: system_u
+    setype: etc_t
   delegate_to: "{{ item }}"
   delegate_facts: true
   loop: "{{ groups['master'] }}"
@@ -22,6 +26,8 @@
   template:
     src: "calicoctl.cfg.j2"
     dest: "/etc/calico/calicoctl.cfg"
+    seuser: system_u
+    setype: etc_t
   delegate_to: "{{ item }}"
   delegate_facts: true
   loop: "{{ groups['master'] }}"

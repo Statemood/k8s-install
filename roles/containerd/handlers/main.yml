@@ -31,3 +31,5 @@
     dest: /etc/bash_completion.d/crictl
     content: "{{ cri_completion.stdout }}"
     mode: 0644
+    seuser: system_u
+    setype: etc_t

@@ -9,6 +9,8 @@
   template:
     src: "haproxy.cfg.j2"
     dest: "/etc/haproxy/haproxy.cfg"
+    seuser: system_u
+    setype: etc_t
   tags: generate_haproxy_cfg
   notify:
     - restart haproxy

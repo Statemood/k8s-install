@@ -112,25 +112,53 @@
     - k8s_sysctl
     - worker_sysctl
 
-- name: "Create kubernetes directory"
+- name: "Create kubernetes pki directory"
   file:
     path: "{{ item.line }}"
     owner: root
     group: root
     mode: 0755
+    seuser: system_u
+    setype: cert_t
     state: directory
   with_items:
     - {line: '/etc/kubernetes/pki'}
+  tags: dir
+
+- name: "Create kubernetes config directory"
+  file:
+    path: "{{ item.line }}"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    setype: etc_t
+    state: directory
+  with_items:
     - {line: '/etc/kubernetes/manifests'}
+  tags: dir
+
+- name: "Create kubernetes data directory"
+  file:
+    path: "{{ item.line }}"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    setype: svirt_sandbox_file_t
+    state: directory
+  with_items:
     - {line: "{{ kubernetes.kubelet_dir }}"}
   tags: dir
 
-- name: "Create kubelet directory"
+- name: "Create sysconfig directory for kubelet"
   file:
     path: "/etc/sysconfig"
     owner: root
     group: root
     mode: 0755
+    seuser: system_u
+    setype: etc_t
     state: directory
   when:
     - ansible_os_family in ["Debian"]
@@ -143,6 +171,8 @@
     owner: root
     group: root
     mode: 0750
+    seuser: system_u
+    setype: bin_t
   with_items:
     - kubelet
     - kube-proxy
@@ -155,9 +185,10 @@
     owner: root
     group: root
     mode: 0644
+    seuser: system_u
+    setype: cert_t
   with_items:
     - "{{ cert.dir }}/ca.pem"
-    - "{{ cert.dir }}/ca.key"
     - "{{ cert.dir }}/{{ ansible_hostname.split('-')[-2:] | join('-') | lower }}/kube-proxy.pem"
     - "{{ cert.dir }}/{{ ansible_hostname.split('-')[-2:] | join('-') | lower }}/kube-proxy.key"
   tags:
@@ -187,6 +218,8 @@
     group: root
     mode: 0640
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: etc_t
   with_items:
     - {src: "bootstrap.kubeconfig.j2",dest: "/etc/kubernetes/bootstrap.kubeconfig" }
     - {src: "proxy.kubeconfig.j2",dest: "/etc/kubernetes/proxy.kubeconfig" }
@@ -199,6 +232,8 @@
     group: root
     mode: 0640
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: etc_c
   with_items:
     - {src: "kubelet.conf.j2",dest: "/etc/kubernetes/kubelet.conf" }
     - {src: "10-kubelet.conf.j2",dest: "/etc/sysconfig/kubelet" }
@@ -212,6 +247,8 @@
     group: root
     mode: 0644
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: systemd_unit_file_t
   with_items:
     - {src: "kubelet.service.j2",dest: "/usr/lib/systemd/system/kubelet.service" }
     - {src: "kube-proxy.service.j2",dest: "/usr/lib/systemd/system/kube-proxy.service" }

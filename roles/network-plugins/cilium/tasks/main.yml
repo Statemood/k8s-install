@@ -35,6 +35,8 @@
     src: 000-cilium-portmap.conflist.j2
     dest: /etc/cni/net.d/000-cilium-portmap.conflist
     mode: "0644"
+    seuser: system_u
+    setype: etc_t
   when: cilium.enable_portmap
   tags:
     - cilium

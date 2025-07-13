@@ -2,14 +2,14 @@
 - name: "Create kubernetes user group"
   group:
     name: kube
-    gid: 200
+    gid: 2010
     system: true
   tags: create_kube_group
 
 - name: Create kubernetes user
   user:
     name: kube
-    uid: 200
+    uid: 2010
     group: kube
     comment: "Kubernetes User"
     create_home: false
@@ -23,9 +23,23 @@
     owner: root
     group: root
     mode: 0755
+    seuser: system_u
+    setype: admin_home_t
     state: directory
   with_items:
     - "~/.kube"
+  tags: dir
+
+- name: "Create kubernetes pki directory"
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    seuser: system_u
+    setype: cert_t
+    state: directory
+  with_items:
     - "/etc/kubernetes/pki"
   tags: dir
 
@@ -35,6 +49,8 @@
     owner: kube
     group: kube
     mode: 0755
+    seuser: system_u
+    setype: var_log_t
     state: directory
   with_items:
     - "/var/log/kubernetes"
@@ -45,18 +61,22 @@
   copy:
     src: "{{ download.dest }}/kubernetes/{{ kubernetes.version }}/{%- if ansible_architecture == 'x86_64' -%}amd64{%- else -%}arm64{%- endif -%}/kubectl"
     dest: "/usr/bin/"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0755
+    seuser: system_u
+    setype: bin_t
   tags: install_kubectl
 
 - name: "Install master"
   copy:
     src: "{{ download.dest }}/kubernetes/{{ kubernetes.version }}/{%- if ansible_architecture == 'x86_64' -%}amd64{%- else -%}arm64{%- endif -%}/{{ item }}"
     dest: "/usr/bin/"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0750
+    seuser: system_u
+    setype: bin_t
   with_items:
     - kube-apiserver
     - kube-controller-manager
@@ -67,9 +87,11 @@
   copy:
     src: "{{ item }}"
     dest: "/etc/kubernetes/pki/"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0644
+    seuser: system_u
+    setype: cert_t
   with_items:
     - "{{ cert.dir }}/ca.key"
     - "{{ cert.dir }}/ca.pem"
@@ -107,10 +129,12 @@
 - name: "Distribution kubectl kubeconfig"
   template:
     src: "admin.kubeconfig.j2"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0600
     dest: "~/.kube/config"
+    seuser: system_u
+    setype: admin_home_t
   tags:
     - dis_kubectl_kubeconfig
     - dis_master_kubeconfig
@@ -118,10 +142,12 @@
 - name: "Distribution master kubeconfig"
   template:
     src: "{{ item.src }}"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0640
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: etc_t
   with_items:
     - {src: "controller-manager.kubeconfig.j2",dest: "/etc/kubernetes/controller-manager.kubeconfig" }
     - {src: "scheduler.kubeconfig.j2",dest: "/etc/kubernetes/scheduler.kubeconfig" }
@@ -130,10 +156,12 @@
 - name: "Distribution master config"
   template:
     src: "{{ item.src }}"
-    owner: kube
-    group: kube
+    owner: root
+    group: root
     mode: 0640
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: etc_t
   with_items:
     - {src: "kube-apiserver.conf.j2",dest: "/etc/kubernetes/kube-apiserver.conf" }
     - {src: "kube-controller-manager.conf.j2",dest: "/etc/kubernetes/kube-controller-manager.conf" }
@@ -148,6 +176,8 @@
     group: root
     mode: 0644
     dest: "{{ item.dest }}"
+    seuser: system_u
+    setype: systemd_unit_file_t
   with_items:
     - {src: "kube-apiserver.service.j2",dest: "/usr/lib/systemd/system/kube-apiserver.service" }
     - {src: "kube-controller-manager.service.j2",dest: "/usr/lib/systemd/system/kube-controller-manager.service" }
